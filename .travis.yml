@@ -1,0 +1,8 @@
+language: csharp
+solution: MergeXml.sln
+install:
+  - nuget restore MergeXml.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+script:
+  - xbuild /p:Configuration=Release MergeXml.sln
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./MergeXml.Tests/bin/Release/MergeXml.Tests.dll
