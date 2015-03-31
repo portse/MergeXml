@@ -64,19 +64,20 @@ namespace MergeXml
             if (element == null) return;
 
             var list = objValue as IList;
+
             if (list != null)
             {
+                var mergedList = list.Cast<object>();
+
                 if (element.HasElements)
                 {
-                    var childName = element.Descendants().First().Name;
-                    foreach (var currentItem in element.Descendants(childName))
-                    {
-                        list.Add(currentItem.Value);
-                    }
+                    mergedList =
+                        element.Descendants(elementAttribute.ChildElementName).Select(x => x.Value).Concat(mergedList);
                 }
 
                 var newListElement = new XElement(elementAttribute.ElementName);
-                foreach (var item in list)
+
+                foreach (var item in mergedList)
                 {
                     newListElement.Add(new XElement(elementAttribute.ChildElementName, item));
                 }
